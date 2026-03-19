@@ -5,381 +5,161 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thread-the-Needle Thursday</title>
   <style>
-    :root {
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --accent: #2563eb;
-      --accent-soft: #dbeafe;
-      --good: #166534;
-      --good-bg: #dcfce7;
-      --bad: #991b1b;
-      --bad-bg: #fee2e2;
-      --shadow: 0 10px 24px rgba(0,0,0,0.08);
-      --radius: 18px;
-    }
- 
-    * {
-      box-sizing: border-box;
-    }
- 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.45;
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
+      color: #1f2937;
     }
  
     .wrap {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 20px;
     }
  
-    .hero {
-      background: linear-gradient(135deg, #ffffff, #eef4ff);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 24px;
-      margin-bottom: 18px;
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
     }
  
     h1 {
-      margin: 0 0 8px;
-      font-size: 2rem;
-    }
- 
-    h2 {
-      margin: 0 0 12px;
-      font-size: 1.2rem;
-    }
- 
-    p {
-      margin: 0 0 10px;
+      margin-top: 0;
     }
  
     .sub {
-      color: var(--muted);
+      color: #6b7280;
     }
  
-    .topbar {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 12px;
-      align-items: center;
-      margin-top: 16px;
+    .scene {
+      margin-bottom: 20px;
     }
  
-    .pill {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
- 
-    .layout {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 18px;
-    }
- 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
- 
-    .scene-box {
+    .scene img {
       width: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #fff;
-      margin-bottom: 14px;
-    }
- 
-    .scene-box img {
-      width: 100%;
+      max-width: 100%;
+      border-radius: 12px;
       display: block;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      background: #e5e7eb;
-    }
- 
-    .scene-fallback {
-      aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      color: var(--muted);
-      background: #f8fafc;
-      font-weight: 700;
-    }
- 
-    .instructions {
-      font-size: 0.96rem;
-      color: var(--muted);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
  
     .clue-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 320px;
+      margin-top: 16px;
     }
  
     .clue {
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 12px;
       background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
       cursor: grab;
-      user-select: none;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    }
- 
-    .clue:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
-      border-color: #cbd5e1;
     }
  
     .clue.dragging {
-      opacity: 0.55;
-      cursor: grabbing;
+      opacity: 0.5;
     }
  
     .clue.correct {
-      border-color: var(--good);
-      background: var(--good-bg);
+      background: #dcfce7;
+      border-color: #166534;
     }
  
     .clue.incorrect {
-      border-color: var(--bad);
-      background: var(--bad-bg);
-    }
- 
-    .label {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-      font-weight: 700;
+      background: #fee2e2;
+      border-color: #991b1b;
     }
  
     .controls {
+      margin-top: 16px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 14px;
     }
  
     button {
-      border: 0;
+      padding: 10px 16px;
+      border: none;
       border-radius: 999px;
-      padding: 12px 16px;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-weight: bold;
     }
  
     .primary {
-      background: var(--accent);
-      color: #fff;
+      background: #2563eb;
+      color: white;
     }
  
     .secondary {
-      background: #eef2ff;
-      color: #3730a3;
-    }
- 
-    .plain {
-      background: #f3f4f6;
+      background: #e5e7eb;
       color: #111827;
     }
  
     .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
       display: none;
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 14px;
-      font-weight: 700;
+      font-weight: bold;
     }
  
     .status.show {
       display: block;
     }
  
-    .status.good {
-      background: var(--good-bg);
-      color: var(--good);
+    .good {
+      background: #dcfce7;
+      color: #166534;
     }
  
-    .status.bad {
-      background: var(--bad-bg);
-      color: var(--bad);
-    }
- 
-    .answer-box, .hint-box, .teacher-box {
-      display: none;
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px dashed #cbd5e1;
-      background: #f8fafc;
-    }
- 
-    .answer-box.show, .hint-box.show, .teacher-box.show {
-      display: block;
-    }
- 
-    .small {
-      font-size: 0.92rem;
-      color: var(--muted);
-    }
- 
-    .footer-note {
-      text-align: center;
-      color: var(--muted);
-      margin-top: 16px;
-      font-size: 0.92rem;
-    }
- 
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
- 
-      .topbar {
-        grid-template-columns: 1fr;
-      }
- 
-      h1 {
-        font-size: 1.65rem;
-      }
+    .bad {
+      background: #fee2e2;
+      color: #991b1b;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <section class="hero">
+    <div class="card">
       <h1>It’s Thread-the-Needle Thursday, everyone.</h1>
-      <p class="sub">Reorder the clues from broadest to most specific. Step 5 should identify exactly one target.</p>
+      <p class="sub">Arrange the clues from broadest to most specific.</p>
  
-      <div class="topbar">
-        <div class="pill" id="roundInfo">Round 1 of 3</div>
-        <div class="pill" id="scoreInfo">Score: 0</div>
-        <div class="pill" id="resultInfo">Unchecked</div>
+      <div class="scene">
+        <img
+          src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
+          alt="Classroom scene"
+        />
+        <p><strong>Scene:</strong> Classroom scene with students near the window side.</p>
       </div>
-    </section>
  
-    <div class="layout">
-      <section class="card">
-        <h2>Scene</h2>
-        <div class="scene-box" id="sceneBox"></div>
-        <p class="small" id="sceneTitle"></p>
-        <div class="teacher-box" id="teacherBox"></div>
-      </section>
+      <h2>Reorder the Clues</h2>
+      <div class="clue-list" id="clueList"></div>
  
-      <section class="card">
-        <h2>Reorder the Clues</h2>
-        <p class="instructions">
-          Arrange the clues so that each step adds one useful detail and narrows the target.
-        </p>
+      <div class="controls">
+        <button class="primary" onclick="checkOrder()">Check Order</button>
+        <button class="secondary" onclick="shuffleClues()">Shuffle</button>
+        <button class="secondary" onclick="showAnswer()">Show Answer</button>
+      </div>
  
-        <div class="clue-list" id="clueList"></div>
- 
-        <div class="controls">
-          <button class="primary" id="checkBtn">Check Order</button>
-          <button class="secondary" id="shuffleBtn">Shuffle</button>
-          <button class="plain" id="hintBtn">Hint</button>
-          <button class="plain" id="answerBtn">Show Answer</button>
-          <button class="primary" id="nextBtn">Next Round</button>
-        </div>
- 
-        <div class="status" id="status"></div>
-        <div class="hint-box" id="hintBox"></div>
-        <div class="answer-box" id="answerBox"></div>
-      </section>
+      <div class="status" id="status"></div>
     </div>
- 
-    <p class="footer-note">Tip: strong stacking keeps multiple candidates alive in the middle, then isolates one at the end.</p>
   </div>
  
   <script>
-    const rounds = [
-      {
-        title: "Classroom scene: students near the window side",
-        image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
-        teacherNote: "Target: the standing student with glasses and pigtails. Step 3 should still leave multiple candidates. Step 5 should leave exactly one.",
-        hint: "Look for the broadest group first, then the phrase that introduces position, then relation, then the unique visual feature.",
-        correct: [
-          "students",
-          "near the window side of the room",
-          "the ones not sitting",
-          "beside a seated student",
-          "wearing glasses with pigtails"
-        ]
-      },
-      {
-        title: "Desk scene: laptops on a shared table",
-        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
-        teacherNote: "Target: one laptop among similar laptops. Final clue should isolate exactly one device.",
-        hint: "Start with the whole category, then narrow by location, then by relation, then by visual detail.",
-        correct: [
-          "laptops",
-          "near the center area of the table",
-          "closest to the window aisle",
-          "beside the one with the blue keyboard",
-          "with the round logo on the back"
-        ]
-      },
-      {
-        title: "Library scene: readers at a long table",
-        image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80",
-        teacherNote: "Target: one reader in a cluttered shared space. Keep the middle clues broad enough to avoid early uniqueness.",
-        hint: "The correct order moves from group → location → posture/position → relationship → unique feature.",
-        correct: [
-          "readers",
-          "on the left side of the table",
-          "the one leaning forward",
-          "next to the reader with the green book",
-          "wearing a striped sweater"
-        ]
-      }
+    const correctClues = [
+      "students",
+      "near the window side of the room",
+      "the ones not sitting",
+      "beside a seated student",
+      "wearing glasses with pigtails"
     ];
  
-    let roundIndex = 0;
-    let score = 0;
-    let checkedThisRound = false;
     let draggedItem = null;
- 
-    const clueList = document.getElementById("clueList");
-    const sceneBox = document.getElementById("sceneBox");
-    const sceneTitle = document.getElementById("sceneTitle");
-    const teacherBox = document.getElementById("teacherBox");
-    const status = document.getElementById("status");
-    const hintBox = document.getElementById("hintBox");
-    const answerBox = document.getElementById("answerBox");
-    const roundInfo = document.getElementById("roundInfo");
-    const scoreInfo = document.getElementById("scoreInfo");
-    const resultInfo = document.getElementById("resultInfo");
- 
-    const checkBtn = document.getElementById("checkBtn");
-    const shuffleBtn = document.getElementById("shuffleBtn");
-    const hintBtn = document.getElementById("hintBtn");
-    const answerBtn = document.getElementById("answerBtn");
-    const nextBtn = document.getElementById("nextBtn");
  
     function shuffle(array) {
       const arr = [...array];
@@ -390,41 +170,92 @@
       return arr;
     }
  
-    function loadScene(round) {
-      sceneTitle.textContent = round.title;
-      teacherBox.className = "teacher-box show";
-      teacherBox.innerHTML = `<strong>Teacher note:</strong> ${round.teacherNote}`;
- 
-      if (round.image) {
-        sceneBox.innerHTML = `
-          <img
-            src="${round.image}"
-            alt="${round.title}"
-            onerror="this.parentElement.innerHTML='<div class=&quot;scene-fallback&quot;>Image unavailable.<br>Replace the image URL in the round data.</div>';"
-          />
-        `;
-      } else {
-        sceneBox.innerHTML = `<div class="scene-fallback">Add an image URL in the round data.</div>`;
-      }
-    }
- 
     function renderClues(items) {
+      const clueList = document.getElementById("clueList");
       clueList.innerHTML = "";
+ 
       items.forEach((text, index) => {
         const clue = document.createElement("div");
         clue.className = "clue";
         clue.draggable = true;
         clue.dataset.value = text;
-        clue.innerHTML = `
-          <div class="label">Clue ${index + 1}</div>
-          <div>${text}</div>
-        `;
-        addDragEvents(clue);
+        clue.textContent = "Clue " + (index + 1) + ": " + text;
+ 
+        clue.addEventListener("dragstart", () => {
+          draggedItem = clue;
+          clue.classList.add("dragging");
+        });
+ 
+        clue.addEventListener("dragend", () => {
+          clue.classList.remove("dragging");
+          draggedItem = null;
+          updateLabels();
+        });
+ 
+        clue.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          if (!draggedItem || draggedItem === clue) return;
+ 
+          const rect = clue.getBoundingClientRect();
+          const offset = e.clientY - rect.top;
+          const midpoint = rect.height / 2;
+ 
+          if (offset < midpoint) {
+            clueList.insertBefore(draggedItem, clue);
+          } else {
+            clueList.insertBefore(draggedItem, clue.nextSibling);
+          }
+        });
+ 
         clueList.appendChild(clue);
       });
     }
  
-    function addDragEvents(item) {
-      item.addEventListener("dragstart", () => {
-        draggedItem = item;
-        item.
+    function updateLabels() {
+      const clues = document.querySelectorAll(".clue");
+      clues.forEach((clue, index) => {
+        clue.textContent = "Clue " + (index + 1) + ": " + clue.dataset.value;
+      });
+    }
+ 
+    function checkOrder() {
+      const clues = document.querySelectorAll(".clue");
+      let correctCount = 0;
+ 
+      clues.forEach((clue, index) => {
+        clue.classList.remove("correct", "incorrect");
+        if (clue.dataset.value === correctClues[index]) {
+          clue.classList.add("correct");
+          correctCount++;
+        } else {
+          clue.classList.add("incorrect");
+        }
+      });
+ 
+      const status = document.getElementById("status");
+      status.classList.add("show");
+ 
+      if (correctCount === correctClues.length) {
+        status.className = "status show good";
+        status.textContent = "Excellent. The order is correct.";
+      } else {
+        status.className = "status show bad";
+        status.textContent = "You got " + correctCount + " out of " + correctClues.length + " correct.";
+      }
+    }
+ 
+    function shuffleClues() {
+      document.getElementById("status").className = "status";
+      renderClues(shuffle(correctClues));
+    }
+ 
+    function showAnswer() {
+      renderClues(correctClues);
+      document.getElementById("status").className = "status show good";
+      document.getElementById("status").textContent = "Answer revealed.";
+    }
+ 
+    renderClues(shuffle(correctClues));
+  </script>
+</body>
+</html>
